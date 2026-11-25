@@ -12,8 +12,6 @@ import {
   DOMAINS_NO_INFO,
   DOMAINS_WITH_MORE_INFO,
 } from "./const";
-import "./ha-more-info-history";
-import "./ha-more-info-logbook";
 import "./more-info-content";
 
 @customElement("ha-more-info-info")
@@ -36,6 +34,18 @@ export class MoreInfoInfo extends LitElement {
     const isNewMoreInfo = stateObj && computeShowNewMoreInfo(stateObj);
     const isFullHeight =
       isNewMoreInfo || DOMAINS_FULL_HEIGHT_MORE_INFO.includes(domain);
+
+    const supportsInlineHistory = !DOMAINS_WITH_MORE_INFO.includes(domain);
+    const showHistory =
+      supportsInlineHistory && computeShowHistoryComponent(this.hass, entityId);
+    const showLogbook =
+      supportsInlineHistory && computeShowLogBookComponent(this.hass, entityId);
+    if (showHistory) {
+      import("./ha-more-info-history");
+    }
+    if (showLogbook) {
+      import("./ha-more-info-logbook");
+    }
 
     return html`
       <div class="container" data-domain=${domain}>
@@ -78,8 +88,7 @@ export class MoreInfoInfo extends LitElement {
                 `
           }
           ${
-            DOMAINS_WITH_MORE_INFO.includes(domain) ||
-            !computeShowHistoryComponent(this.hass, entityId)
+            !showHistory
               ? ""
               : html`<ha-more-info-history
                   .hass=${this.hass}
@@ -87,8 +96,7 @@ export class MoreInfoInfo extends LitElement {
                 ></ha-more-info-history>`
           }
           ${
-            DOMAINS_WITH_MORE_INFO.includes(domain) ||
-            !computeShowLogBookComponent(this.hass, entityId)
+            !showLogbook
               ? ""
               : html`<ha-more-info-logbook
                   .hass=${this.hass}

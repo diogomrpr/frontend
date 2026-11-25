@@ -56,7 +56,6 @@ import type { HaDropdownSelectEvent } from "../../components/ha-dropdown";
 import "../../components/ha-dropdown-item";
 import "../../components/ha-icon-button";
 import "../../components/ha-icon-button-prev";
-import "./ha-more-info-related";
 import { downloadCameraSnapshot } from "../../data/camera";
 import { apiContext } from "../../data/context";
 import type {
@@ -92,11 +91,7 @@ import {
 import "./controls/more-info-default";
 import type { FavoritesDialogContext } from "./favorites";
 import { getFavoritesDialogHandler } from "./favorites";
-import "./ha-more-info-add-to";
-import "./ha-more-info-details";
-import "./ha-more-info-history-and-logbook";
 import "./ha-more-info-info";
-import "./ha-more-info-settings";
 import "./more-info-content";
 
 export interface MoreInfoDialogParams {
@@ -129,6 +124,14 @@ declare global {
 }
 
 const DEFAULT_VIEW: MoreInfoView = "info";
+
+const loadView: Partial<Record<MoreInfoView, () => Promise<unknown>>> = {
+  history: () => import("./ha-more-info-history-and-logbook"),
+  settings: () => import("./ha-more-info-settings"),
+  related: () => import("./ha-more-info-related"),
+  add_to: () => import("./ha-more-info-add-to"),
+  details: () => import("./ha-more-info-details"),
+};
 
 const BREADCRUMB_NAME: EntityNameType[] = [
   "area",
@@ -1107,6 +1110,7 @@ export class MoreInfoDialog extends DirtyStateProviderMixin<
     }
 
     if (changedProps.has("_currView")) {
+      loadView[this._currView]?.();
       this._infoEditMode = false;
       this._detailsYamlMode = false;
     }
