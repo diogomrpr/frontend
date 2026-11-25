@@ -25,9 +25,9 @@ import {
   isStrategyDashboard,
   saveConfig,
 } from "../../data/lovelace/config/types";
-import { fetchResources } from "../../data/lovelace/resource";
 import { LOVELACE_PANEL } from "../../data/panel";
 import type { WindowWithPreloads } from "../../data/preloads";
+import { fetchDashboardResources } from "../../data/preloads";
 import "../../layouts/hass-error-screen";
 import "../../layouts/hass-loading-screen";
 import type { ShowToastParams } from "../../managers/notification-manager";
@@ -320,7 +320,7 @@ export class LovelacePanel extends LitElement {
     }
     if (!resourcesLoaded) {
       resourcesLoaded = true;
-      (preloadWindow.llResProm || fetchResources(this.hass!.connection)).then(
+      fetchDashboardResources(this.hass!.connection, this.urlPath).then(
         (resources) => loadLovelaceResources(resources, this.hass!)
       );
     }

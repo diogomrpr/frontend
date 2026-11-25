@@ -179,6 +179,10 @@ export class HomeAssistantAppEl extends QuickBarMixin(HassElement) {
       };
 
       this._panelUrl = panelUrl(path);
+      const preloads = window as WindowWithPreloads;
+      if (preloads.dashboardResourcePreload?.urlPath !== this._panelUrl) {
+        preloads.dashboardResourcePreload = undefined;
+      }
       this.panelUrlChanged(this._panelUrl!);
       this._updateHass({ panelUrl: this._panelUrl });
     };

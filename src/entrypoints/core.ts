@@ -16,6 +16,7 @@ import { fetchConfig } from "../data/lovelace/config/types";
 import { fetchResources } from "../data/lovelace/resource";
 import { MAIN_WINDOW_NAME } from "../data/main_window";
 import type { WindowWithPreloads } from "../data/preloads";
+import { preloadDashboardResources } from "../data/preloads";
 import { getRecorderInfo } from "../data/recorder";
 import { subscribeRepairsIssueRegistry } from "../data/repairs";
 import { subscribeAreaRegistry } from "../data/ws-area_registry";
@@ -157,7 +158,7 @@ window.hassConnection.then(({ conn }) => {
   subscribeFloorRegistry(conn, noop);
   subscribeConfig(conn, noop);
   subscribeServices(conn, noop);
-  subscribePanels(conn, noop);
+  subscribePanels(conn, preloadDashboardResources(conn));
   subscribeThemes(conn, noop);
   subscribeUser(conn, noop);
   subscribeFrontendUserData(conn, "core", noop);
