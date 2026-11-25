@@ -18,12 +18,17 @@ import { actionHandler } from "../common/directives/action-handler-directive";
 import { findEntities } from "../common/find-entities";
 import { handleAction } from "../common/handle-action";
 import { hasAction } from "../common/has-action";
-import { DEFAULT_CONFIG } from "../editor/heading-badge-editor/hui-entity-heading-badge-editor";
 import type {
   LovelaceHeadingBadge,
   LovelaceHeadingBadgeEditor,
 } from "../types";
 import type { EntityHeadingBadgeConfig } from "./types";
+
+export const DEFAULT_CONFIG: Partial<EntityHeadingBadgeConfig> = {
+  type: "entity",
+  show_state: true,
+  show_icon: true,
+};
 
 const DEFAULT_ACTIONS: Pick<
   EntityHeadingBadgeConfig,
