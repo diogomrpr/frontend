@@ -5,7 +5,11 @@ import type { RouteHandler } from "workbox-core";
 import { cacheNames } from "workbox-core";
 import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import { ExpirationPlugin } from "workbox-expiration";
-import { cleanupOutdatedCaches, precacheAndRoute } from "workbox-precaching";
+import {
+  addPlugins,
+  cleanupOutdatedCaches,
+  precacheAndRoute,
+} from "workbox-precaching";
 import { registerRoute, setCatchHandler } from "workbox-routing";
 import {
   CacheFirst,
@@ -17,6 +21,8 @@ import {
   createNavigationFallbackPlugin,
   noFallBackRegEx,
 } from "../util/service-worker-navigation";
+
+import { createStartupPrecachePlugin } from "../util/service-worker-startup";
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 declare const __WB_MANIFEST__: Parameters<typeof precacheAndRoute>[0];
@@ -101,6 +107,7 @@ const ignoreTokenPlugin = {
 };
 
 const initRouting = () => {
+  addPlugins([createStartupPrecachePlugin()]);
   precacheAndRoute(__WB_MANIFEST__, {
     // Ignore all URL parameters.
     ignoreURLParametersMatching: [/.*/],

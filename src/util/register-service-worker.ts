@@ -1,11 +1,10 @@
+import { supportsServiceWorker } from "./service-worker-startup";
 import { showToast } from "./toast";
+
+export { supportsServiceWorker };
 
 const UPDATE_DELAY = 60_000;
 const UPDATE_TOAST_ID = "frontend-update-available";
-
-export const supportsServiceWorker = () =>
-  "serviceWorker" in navigator &&
-  (location.protocol === "https:" || location.hostname === "localhost");
 
 /**
  * Reload once when a new worker takes over. The claim after a first install

@@ -26,7 +26,9 @@ import { subscribePanels } from "../data/ws-panels";
 import { subscribeThemes } from "../data/ws-themes";
 import { subscribeUser } from "../data/ws-user";
 import type { ExternalAuth } from "../external_app/external_auth";
+import { prioritizeFrontendStartup } from "../util/service-worker-startup";
 
+void prioritizeFrontendStartup();
 window.name = MAIN_WINDOW_NAME;
 (window as any).frontendVersion = __VERSION__;
 

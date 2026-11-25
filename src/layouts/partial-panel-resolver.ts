@@ -285,9 +285,17 @@ class PartialPanelResolver extends HassRouterPage {
       }
       const component =
         COMPONENTS[this.hass.panels[this._currentPage].component_name];
+      const rendered = this.pageRendered;
+      if (window.releaseFrontendStartup) {
+        // The splash timeout may expire before a slow dashboard is ready.
+        rendered.then(
+          window.releaseFrontendStartup,
+          window.releaseFrontendStartup
+        );
+      }
       await promiseTimeout(
         component?.readyTimeout ?? PANEL_READY_TIMEOUT,
-        this.pageRendered
+        rendered
       ).catch(() => undefined);
       // Only fire frontend/loaded when this call actually removed the launch
       // screen, so later panel updates do not fire it again. Native apps remove
