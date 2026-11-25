@@ -26,9 +26,6 @@ export default <T extends Constructor<HassBaseEl>>(superClass: T) =>
     protected firstUpdated(changedProps: PropertyValues<this>) {
       super.firstUpdated(changedProps);
       this.addEventListener("hass-more-info", (ev) => this._handleMoreInfo(ev));
-
-      // Load it once we are having the initial rendering done.
-      import("../dialogs/more-info/ha-more-info-dialog");
     }
 
     private async _handleMoreInfo(
