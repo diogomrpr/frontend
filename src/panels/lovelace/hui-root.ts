@@ -508,7 +508,7 @@ class HUIRoot extends KeyboardShortcutMixin(LitElement) {
           (view.subview || _isTabHiddenForUser(view));
         const tabContent = html`
           ${
-            icon_only || icon_and_title
+            !hidden && (icon_only || icon_and_title)
               ? html`<ha-icon
                   class=${classMap({
                     "child-view-icon": Boolean(view.subview),
